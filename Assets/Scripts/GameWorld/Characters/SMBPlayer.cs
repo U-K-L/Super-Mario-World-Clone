@@ -33,9 +33,14 @@ public class SMBPlayer : SMBCharacter {
 	public float runningMultiplyer = 2f;
 	public float minVelocityToCoast = 0.25f;
 
+    public float deathX = 0f;
+    public float deathY = 0f;
+
 	public Bounds grownUpColliderSize;
 
 	public AudioClip[] soundEffects;
+
+    public AIController controller;
 
 	override protected void Awake() {
 
@@ -44,7 +49,8 @@ public class SMBPlayer : SMBCharacter {
 	}
 
 	void Start() {
-
+        controller = GetComponent<AIController>();
+        controller.AmHere();
 		_state = SMBConstants.PlayerState.Short;
 		_particleSystem._shootParticles = false;
 
@@ -55,6 +61,7 @@ public class SMBPlayer : SMBCharacter {
 	// Update is called once per frame
 	override protected void Update () {
 
+        UpdateTime();
 		if (_lockController)
 			return;
 
@@ -70,7 +77,7 @@ public class SMBPlayer : SMBCharacter {
 			PlayMoveAnimation (speed, (float)SMBConstants.MoveDirection.Backward);
 			Coast (SMBConstants.MoveDirection.Backward);
 		} 
-		else if (Input.GetKey (KeyCode.RightArrow)) {
+		else if (controller.Input.GetInputMovement() == true) {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Forward);
 			PlayMoveAnimation (speed, (float)SMBConstants.MoveDirection.Forward);
@@ -101,10 +108,15 @@ public class SMBPlayer : SMBCharacter {
 		base.Update ();
 	}
 
+    public void UpdateTime()
+    {
+
+    }
+
 	float DefineMoveSpeed() {
 
 		float speed = xSpeed;
-		if (Input.GetKey (KeyCode.Z)) {
+		if (controller.Input.GetInputRun() == true) {
 
 			speed *= runningMultiplyer;
 
@@ -116,7 +128,7 @@ public class SMBPlayer : SMBCharacter {
 			if (_runningTimer >= runTime)
 				speed *= runningMultiplyer * 0.625f;
 		} 
-		else if (Input.GetKeyUp (KeyCode.Z)) {
+		else if (controller.Input.GetInputRun() == false) {
 
 			_runningTimer = 0f;
 		}
@@ -233,6 +245,10 @@ public class SMBPlayer : SMBCharacter {
 		_body.acceleration = Vector2.zero;
 		_body.applyGravity = false;
 
+        Debug.Log(transform.position.x);
+        deathX = transform.position.x;
+        deathY = transform.position.y;
+
 		_animator.SetTrigger ("triggerDie");
 
 		if(animate)
@@ -248,7 +264,7 @@ public class SMBPlayer : SMBCharacter {
 				
 	void Jump() {
 
-		if (_isOnGround && Input.GetKeyDown(KeyCode.X)){
+		if (_isOnGround && controller.Input.GetInputJump() == true){
 
 			_jumpTimer = longJumpTime;
 			_body.velocity.y = ySpeed * Time.fixedDeltaTime;
@@ -258,12 +274,12 @@ public class SMBPlayer : SMBCharacter {
 
 		if (_jumpTimer > 0f) {
 
-			if (Input.GetKeyUp(KeyCode.X)) {
+			if (controller.Input.GetInputJump() == false) {
 
 				_jumpTimer = 0f;
 
 			}
-			else if(_body.velocity.y > 0f && Input.GetKey(KeyCode.X)) {
+			else if(_body.velocity.y > 0f && controller.Input.GetInputJump() == true) {
 
 				float runningBoost = 1f;
 				if (_runningTimer >= runTime)

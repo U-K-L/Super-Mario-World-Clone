@@ -8,14 +8,14 @@ using System.Collections;
 [RequireComponent (typeof (SpriteRenderer))]
 public class SMBCharacter : MonoBehaviour {
 
-	protected bool  _isOnGround;
+	public bool  _isOnGround;
 
 	// Custom components
-	protected AudioSource     _audio;
-	protected Animator        _animator;
-	protected SpriteRenderer  _renderer;
-	protected SMBRigidBody    _body;
-	protected SMBCollider     _collider;
+	public AudioSource     _audio;
+	public Animator        _animator;
+	public SpriteRenderer  _renderer;
+	public SMBRigidBody    _body;
+	public SMBCollider     _collider;
 
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
