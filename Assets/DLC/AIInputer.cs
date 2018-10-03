@@ -10,17 +10,16 @@ public class AIInputer {
     private bool human = false;
 	// Use this for initialization
 	void Start () {
-        Debug.Log("yes starts");
+
     }
 	
 	// Update is called once per frame
 	public void Update () {
-        if(human == false)
+        if(human == true)
         {
             if (Input.GetKey(KeyCode.RightArrow))
             {
                 s = true;
-                Debug.Log("Right is pressed");
             }
             else
             {
@@ -30,11 +29,19 @@ public class AIInputer {
             if (Input.GetKey(KeyCode.X))
             {
                 t = true;
-                Debug.Log("Jump is pressed");
             }
             else
             {
                 t = false;
+            }
+
+            if (Input.GetKey(KeyCode.Z))
+            {
+                r = true;
+            }
+            else
+            {
+                r = false;
             }
         }
 

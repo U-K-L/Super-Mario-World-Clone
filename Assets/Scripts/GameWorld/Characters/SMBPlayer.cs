@@ -50,7 +50,6 @@ public class SMBPlayer : SMBCharacter {
 
 	void Start() {
         controller = GetComponent<AIController>();
-        controller.AmHere();
 		_state = SMBConstants.PlayerState.Short;
 		_particleSystem._shootParticles = false;
 
@@ -245,14 +244,12 @@ public class SMBPlayer : SMBCharacter {
 		_body.acceleration = Vector2.zero;
 		_body.applyGravity = false;
 
-        Debug.Log(transform.position.x);
-        deathX = transform.position.x;
-        deathY = transform.position.y;
-
 		_animator.SetTrigger ("triggerDie");
 
 		if(animate)
 			Invoke("PlayDeadAnimation", timeToDie);
+
+        controller.Dead();
 	}
 
 	void PlayDeadAnimation() {

@@ -24,14 +24,10 @@ public class GeneralTemplateAI : AIController {
     // Update is called once per frame
     void Update () {
 
-        Dead(); //Does an action when player dies.
 	}
 
-    void Dead()
+    public override void Dead()
     {
-        if (character.State == SMBConstants.PlayerState.Dead)
-        {
 
-        }
     }
 }

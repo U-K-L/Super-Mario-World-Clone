@@ -20,8 +20,5 @@ public class AIController : MonoBehaviour
         Input.Update();
     }
 
-    public void AmHere()
-    {
-
-    }
+    public virtual void Dead() { }
 }
